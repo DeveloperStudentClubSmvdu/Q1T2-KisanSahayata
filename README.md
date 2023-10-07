@@ -45,6 +45,7 @@ Develop An application that assists farmers with the help of data from the meteo
 - [Achalendra Pratap Singh](https://github.com/AchalendraPratapsingh)
 - [Akshat](https://github.com/Akshat2713)
 - [Prem](https://github.com/prem85642)
+- [Vipul](https://github.com/vipul0123)
 
 Mentors:
 - [Simran Agarwal](https://github.com/simmiagarwal60)
