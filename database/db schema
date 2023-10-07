@@ -1,0 +1,188 @@
+Table Users {
+  user_id int [pk]
+  username varchar
+  password_hash varchar
+  email varchar
+  name varchar
+  phone varchar
+  address varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table Crops {
+  crop_id int [pk]
+  name varchar
+  description text
+  planting_season varchar
+  harvesting_season varchar
+  image_url varchar
+}
+
+Table Farms {
+  farm_id int [pk]
+  user_id int [ref: > Users.user_id]
+  name varchar
+  location varchar
+  size float
+  description text
+  created_at datetime
+  updated_at datetime
+}
+
+Table Plots {
+  plot_id int [pk]
+  farm_id int [ref: > Farms.farm_id]
+  plot_number int
+  size float
+  soil_type varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table FarmingActivities {
+  activity_id int [pk]
+  plot_id int [ref: > Plots.plot_id]
+  activity_type varchar
+  date date
+  description text
+  created_at datetime
+  updated_at datetime
+}
+
+Table WeatherData {
+  weather_id int [pk]
+  date date
+  temperature float
+  humidity float
+  precipitation float
+  wind_speed float
+  farm_id int [ref: > Farms.farm_id]
+}
+
+Table PestAndDisease {
+  pest_id int [pk]
+  name varchar
+  description text
+  symptoms text
+  treatment text
+  affected_crops varchar
+  image_url varchar
+}
+
+Table CropInventory {
+  inventory_id int [pk]
+  farm_id int [ref: > Farms.farm_id]
+  crop_id int [ref: > Crops.crop_id]
+  quantity float
+  planting_date date
+  harvesting_date date
+  status varchar
+}
+
+Table MarketPrices {
+  price_id int [pk]
+  crop_id int [ref: > Crops.crop_id]
+  market_name varchar
+  price float
+  date date
+  unit varchar
+  currency varchar
+}
+
+Table SalesTransactions {
+  transaction_id int [pk]
+  crop_id int [ref: > Crops.crop_id]
+  seller_id int [ref: > Users.user_id]
+  buyer_id int [ref: > Users.user_id]
+  quantity float
+  price float
+  date date
+  payment_method varchar
+  status varchar
+}
+
+Table Posts {
+  post_id int [pk]
+  user_id int [ref: > Users.user_id]
+  title varchar
+  content text
+  created_at datetime
+  updated_at datetime
+}
+
+Table Comments {
+  comment_id int [pk]
+  user_id int [ref: > Users.user_id]
+  post_id int [ref: > Posts.post_id]
+  content text
+  created_at datetime
+  updated_at datetime
+}
+
+Table Likes {
+  like_id int [pk]
+  user_id int [ref: > Users.user_id]
+  post_id int [ref: > Posts.post_id]
+  comment_id int [ref: > Comments.comment_id]
+  created_at datetime
+}
+
+Table Followers {
+  follower_id int [pk]
+  user_id int [ref: > Users.user_id]
+  follower_user_id int [ref: > Users.user_id]
+  created_at datetime
+}
+
+Table Notifications {
+  notification_id int [pk]
+  user_id int [ref: > Users.user_id]
+  type varchar
+  content text
+  created_at datetime
+  read_status varchar
+}
+
+Table Groups {
+  group_id int [pk]
+  name varchar
+  description text
+  created_by int [ref: > Users.user_id]
+  created_at datetime
+}
+
+Table GroupMemberships {
+  membership_id int [pk]
+  user_id int [ref: > Users.user_id]
+  group_id int [ref: > Groups.group_id]
+  role varchar
+  joined_at datetime
+}
+
+Table GroupPosts {
+  group_post_id int [pk]
+  user_id int [ref: > Users.user_id]
+  group_id int [ref: > Groups.group_id]
+  title varchar
+  content text
+  created_at datetime
+  updated_at datetime
+}
+
+Table GroupComments {
+  group_comment_id int [pk]
+  user_id int [ref: > Users.user_id]
+  group_post_id int [ref: > GroupPosts.group_post_id]
+  content text
+  created_at datetime
+  updated_at datetime
+}
+
+Table GroupMembershipRequests {
+  request_id int [pk]
+  user_id int [ref: > Users.user_id]
+  group_id int [ref: > Groups.group_id]
+  status varchar
+  created_at datetime
+}
