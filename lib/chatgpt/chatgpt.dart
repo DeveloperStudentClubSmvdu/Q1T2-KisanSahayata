@@ -45,7 +45,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       uri,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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", // Replace with your actual API key
+        "Authorization": "Bearer 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", // Replace with your actual API key
       },
       body: json.encode(body),
     );
@@ -60,7 +60,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ChatGPT Flutter Example'),
+        title: Text('PlantDoctorGPT'),
       ),
       body: Column(
         children: <Widget>[
