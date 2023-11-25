@@ -1,45 +1,42 @@
-import 'dart:convert';
+// chat_gpt_page.dart
 
-import 'package:agriplant/chatgpt/apikey.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 
-class ChatGPTScreen extends StatefulWidget {
+class ChatGPTPage extends StatefulWidget {
   @override
-  _ChatGPTScreenState createState() => _ChatGPTScreenState();
+  _ChatGPTPageState createState() => _ChatGPTPageState();
 }
 
-class _ChatGPTScreenState extends State<ChatGPTScreen> {
+class _ChatGPTPageState extends State<ChatGPTPage> {
   final List<Message> _messages = [];
-
   final TextEditingController _textEditingController = TextEditingController();
 
-  void onSendMessage() async {
-    Message message = Message(text: _textEditingController.text, isMe: true);
+  void _sendMessage() async {
+    String userMessage = _textEditingController.text;
 
+    // Send user message to ChatGPT API
+    String chatGptResponse = await sendMessageToChatGpt(userMessage);
+
+    // Update UI with user and ChatGPT messages
+    setState(() {
+      _messages.add(Message(text: userMessage, isUser: true));
+      _messages.add(Message(text: chatGptResponse, isUser: false));
+    });
+
+    // Clear the text input
     _textEditingController.clear();
-
-    setState(() {
-      _messages.insert(0, message);
-    });
-
-    String response = await sendMessageToChatGpt(message.text);
-
-    Message chatGpt = Message(text: response, isMe: false);
-
-    setState(() {
-      _messages.insert(0, chatGpt);
-    });
   }
 
-  Future<String> sendMessageToChatGpt(String message) async {
+  Future<String> sendMessageToChatGpt(String userMessage) async {
     Uri uri = Uri.parse("https://api.openai.com/v1/chat/completions");
 
     Map<String, dynamic> body = {
       "model": "gpt-3.5-turbo",
       "messages": [
-        {"role": "user", "content": "message "}
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": userMessage}
       ],
       "max_tokens": 500,
     };
@@ -48,67 +45,27 @@ class _ChatGPTScreenState extends State<ChatGPTScreen> {
       uri,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${APIKey.apiKey}",
+        "Authorization": "Bearer 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", // Replace with your actual API key
       },
       body: json.encode(body),
     );
 
-    print(response.body);
-
-    Map<String, dynamic> parsedReponse = json.decode(response.body);
-
-    String reply = parsedReponse['choices'][0]['message']['content'];
+    Map<String, dynamic> parsedResponse = json.decode(response.body);
+    String reply = parsedResponse['choices'][0]['message']['content'];
 
     return reply;
-  }
-
-  Widget _buildMessage(Message message) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        child: Column(
-          crossAxisAlignment:
-          message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              message.isMe ? 'You' : 'GPT',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(message.text),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff2c10da),
-        title: Text('PlantdoctorGPT',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-
-          color: Color(0xff0b461a),
-        ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/Green Tree Planting Banner Background, Green, Arbor Day, Banner Background Background Image And Wallpaper for Free Download.jpeg'),
-                  fit: BoxFit.fill
-              )
-          ),
-        ),
+        title: Text('ChatGPT Flutter Example'),
       ),
-
       body: Column(
         children: <Widget>[
           Expanded(
             child: ListView.builder(
-              reverse: true,
               itemCount: _messages.length,
               itemBuilder: (BuildContext context, int index) {
                 return _buildMessage(_messages[index]);
@@ -117,7 +74,6 @@ class _ChatGPTScreenState extends State<ChatGPTScreen> {
           ),
           Divider(height: 1.0),
           Container(
-
             decoration: BoxDecoration(color: Theme.of(context).cardColor),
             child: Row(
               children: <Widget>[
@@ -133,21 +89,40 @@ class _ChatGPTScreenState extends State<ChatGPTScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: onSendMessage,
+                  onPressed: _sendMessage,
                 ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
 
+  Widget _buildMessage(Message message) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: Column(
+          crossAxisAlignment:
+          message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              message.isUser ? 'You' : 'ChatGPT',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(message.text),
+          ],
+        ),
+      ),
     );
   }
 }
 
 class Message {
   final String text;
-  final bool isMe;
+  final bool isUser;
 
-  Message({required this.text, required this.isMe});
+  Message({required this.text, required this.isUser});
 }
