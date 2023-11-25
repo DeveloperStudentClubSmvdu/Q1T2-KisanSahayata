@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final pages = [const ExplorePage(), const ServicesPage(), ChatGPTScreen(), WeatherPage()];
+  final pages = [const ExplorePage(), const ServicesPage(), ChatGPTPage(), WeatherPage()];
   int currentPageIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
