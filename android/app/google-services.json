@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "388371296963",
+    "project_id": "proje-9823c",
+    "storage_bucket": "proje-9823c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388371296963:android:86ec1d994c62e304a06876",
+        "android_client_info": {
+          "package_name": "com.example.kisansahayata"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuLBUNRFzYuwT4uyelBLj63Xy0ZQ_0jzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
