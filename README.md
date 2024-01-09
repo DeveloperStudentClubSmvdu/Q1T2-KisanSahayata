@@ -39,7 +39,10 @@ Develop An application that assists farmers with the help of data from the meteo
 
 ## Tech Stacks
 
-- **JAVA** 
+- **Flutter**
+- **Dart**
+- **Firebase**
+   
 ## Contributors
 
 - [Achalendra Pratap Singh](https://github.com/AchalendraPratapsingh)
